@@ -53,8 +53,15 @@ class CurrencyPair(Enum):
                 raise ValueError("Invalid string format for currency pair.")
         elif len(args) == 2:  # Two separate currency arguments
             first_currency, second_currency = args
-            if not isinstance(first_currency, Currency) or not isinstance(second_currency, Currency):
-                raise ValueError("Both arguments must be instances of Currency.")
+            if isinstance(first_currency, str):
+                first_currency = Currency[first_currency]
+            elif not isinstance(first_currency, Currency):
+                raise ValueError("First argument must be an instance of Currency or a valid currency string.")
+            
+            if isinstance(second_currency, str):
+                second_currency = Currency[second_currency]
+            elif not isinstance(second_currency, Currency):
+                raise ValueError("Second argument must be an instance of Currency or a valid currency string.")
         else:
             raise ValueError("Invalid number of arguments for CurrencyPair constructor.")
 
@@ -66,7 +73,7 @@ class CurrencyPair(Enum):
                 return pair
 
         raise ValueError(f"No matching CurrencyPair found for {first_currency}/{second_currency}.")
-
+    
     def get_domestic_currency(self):
         """Returns the domestic currency of the currency pair."""
         return self.value[1]

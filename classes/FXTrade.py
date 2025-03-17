@@ -55,12 +55,44 @@ class FXTrade:
             self.giv_payment = Payment(value_date, self.giv_currency, self.giv_amount, PaymentDirection.PAY)
             self.alt_payment = Payment(value_date, self.alt_currency, self.alt_amount, PaymentDirection.RECEIVE)
 
-    # def set_rate(self, rate: float):
-    #     """Set the rate and update alt_amount accordingly."""
-    #     if rate <= 0:
-    #         raise ValueError("Rate must be a positive number.")
-    #     self.rate = rate
-
+        # Automatically calculate the trade if rate or alt_amount is provided
+        if rate is not None or alt_amount is not None:
+            self.calculate_trade(rate=rate, alt_amount=alt_amount)
+            
+    def calculate_trade(self, rate: float = None, alt_amount: float = None):
+        """
+        Calculate the trade by setting either the rate or the alt_amount.
+        If rate is provided, alt_amount is calculated. If alt_amount is provided, rate is calculated.
+        """
+        # if rate is not None and alt_amount is not None:
+        #     raise ValueError("Provide only one of rate or alt_amount, not both.")
+        
+        if rate is not None:
+            if rate <= 0:
+                raise ValueError("Rate must be a positive number.")
+            self.rate = rate
+            if self.giv_currency == self.foreign_currency:
+                self.alt_amount = self.giv_amount * rate    
+            elif self.giv_currency == self.domestic_currency:
+                self.alt_amount = self.giv_amount / rate
+            else:
+                raise ValueError("giv_currency must be either foreign or domestic currency.")
+        elif alt_amount is not None:
+            if alt_amount <= 0:
+                raise ValueError("alt_amount must be a positive number.")
+            self.alt_amount = alt_amount
+            if self.giv_currency == self.foreign_currency:
+                self.rate = self.giv_amount/self.alt_amount    
+            elif self.giv_currency == self.domestic_currency:
+                self.rate = self.alt_amount/self.giv_amount
+            else:
+                raise ValueError("giv_currency must be either foreign or domestic currency.")
+        else:
+            raise ValueError("Either rate or alt_amount must be provided.")
+        
+        # Update rate and alt_payment with the calculated
+        self.rate = rate
+        self.alt_payment.amount = self.alt_amount     
 
     def __repr__(self):
         return (
