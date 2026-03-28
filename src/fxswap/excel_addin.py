@@ -2,9 +2,9 @@ import xlwings as xw
 import sqlite3
 from collections import defaultdict
 from datetime import datetime
-from classes.FXTrade import FXTrade
-from classes.currency_pair import CurrencyPair
-from classes.direction import TradeDirection
+from .classes.FXTrade import FXTrade
+from .classes.currency_pair import CurrencyPair
+from .classes.direction import TradeDirection
 
 # SQL connection setup
 DB_PATH = "c:\\path\\to\\your\\database.db"  # Update with the actual path to your SQL database

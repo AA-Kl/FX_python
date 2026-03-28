@@ -19,4 +19,4 @@ class Payment:
             f"      currency={self.currency},\n"
             f"      amount={self.amount},\n"
             f"      direction={self.direction}{amount_usd_str})"
-        )  
+        )

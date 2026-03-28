@@ -1,0 +1,5 @@
+# FXSwap Project Dependencies
+# Add project dependencies here
+
+xlwings>=0.28.0
+pywin32>=305
