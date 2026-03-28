@@ -85,3 +85,6 @@ class CurrencyPair(Enum):
     def __str__(self):
         base, quote = self.value
         return f"{base.value}/{quote.value}"
+
+    def __repr__(self):
+        return f"CurrencyPair({self})"

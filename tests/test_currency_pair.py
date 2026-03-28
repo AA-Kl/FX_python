@@ -22,6 +22,17 @@ class TestCurrencyPairBasicAccess:
     def test_str_gbp_usd(self):
         assert str(CurrencyPair.GBP_USD) == "GBP/USD"
 
+    def test_repr(self):
+        assert repr(CurrencyPair.EUR_USD) == "CurrencyPair(EUR/USD)"
+
+    def test_repr_usd_jpy(self):
+        assert repr(CurrencyPair.USD_JPY) == "CurrencyPair(USD/JPY)"
+
+    def test_repr_does_not_affect_str(self):
+        pair = CurrencyPair.GBP_USD
+        assert str(pair) == "GBP/USD"
+        assert repr(pair) == "CurrencyPair(GBP/USD)"
+
 
 class TestCurrencyPairFromString:
     def test_from_string_slash_format(self):
