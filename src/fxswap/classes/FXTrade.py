@@ -24,9 +24,9 @@ class FXTrade:
             currency_pair = CurrencyPair(currency_pair)
             
         self.currency_pair = currency_pair
-        self.foreign_currency = self.currency_pair.get_foreign_currency()
-        self.domestic_currency = self.currency_pair.get_domestic_currency()
-        self.giv_currency = giv_currency or self.foreign_currency  # Default to foreign currency
+        self.base_currency = self.currency_pair.get_base_currency()
+        self.quote_currency = self.currency_pair.get_quote_currency()
+        self.giv_currency = giv_currency or self.base_currency  # Default to base currency
 
         # Validate giv_currency
         if self.giv_currency not in currency_pair.value:
@@ -35,12 +35,12 @@ class FXTrade:
         # Assign mandatory parameters
         self.giv_amount = giv_amount
         self.trade_date = trade_date or date.today()  # Default to today if not provided
-        self.alt_currency = self.domestic_currency if self.giv_currency == self.foreign_currency else self.foreign_currency
+        self.alt_currency = self.quote_currency if self.giv_currency == self.base_currency else self.base_currency
         self.giv_direction = giv_direction
-        self.alt_direction = TradeDirection.opposite(self.giv_direction)        
-        self.direction = self.giv_direction if self.giv_currency == self.foreign_currency else self.alt_direction
-        self.foreign_direction = self.direction
-        self.domestic_direction = TradeDirection.opposite(self.direction)
+        self.alt_direction = TradeDirection.opposite(self.giv_direction)
+        self.direction = self.giv_direction if self.giv_currency == self.base_currency else self.alt_direction
+        self.base_direction = self.direction
+        self.quote_direction = TradeDirection.opposite(self.direction)
         self.done = done
         
         # Assign optional parameters
@@ -71,22 +71,22 @@ class FXTrade:
             if rate <= 0:
                 raise ValueError("Rate must be a positive number.")
             self.rate = rate
-            if self.giv_currency == self.foreign_currency:
-                self.alt_amount = self.giv_amount * rate    
-            elif self.giv_currency == self.domestic_currency:
+            if self.giv_currency == self.base_currency:
+                self.alt_amount = self.giv_amount * rate
+            elif self.giv_currency == self.quote_currency:
                 self.alt_amount = self.giv_amount / rate
             else:
-                raise ValueError("giv_currency must be either foreign or domestic currency.")
+                raise ValueError("giv_currency must be either base or quote currency.")
         elif alt_amount is not None:
             if alt_amount <= 0:
                 raise ValueError("alt_amount must be a positive number.")
             self.alt_amount = alt_amount
-            if self.giv_currency == self.foreign_currency:
-                self.rate = self.giv_amount/self.alt_amount    
-            elif self.giv_currency == self.domestic_currency:
+            if self.giv_currency == self.base_currency:
+                self.rate = self.giv_amount/self.alt_amount
+            elif self.giv_currency == self.quote_currency:
                 self.rate = self.alt_amount/self.giv_amount
             else:
-                raise ValueError("giv_currency must be either foreign or domestic currency.")
+                raise ValueError("giv_currency must be either base or quote currency.")
         else:
             raise ValueError("Either rate or alt_amount must be provided.")
         
@@ -107,10 +107,10 @@ class FXTrade:
             f"    giv_direction={self.giv_direction.value},\n"
             f"    alt_direction={self.alt_direction.value},\n"
             f"    direction={self.direction.value},\n"
-            f"    foreign_currency={self.foreign_currency},\n"
-            f"    foreign_direction={self.foreign_direction.value},\n"
-            f"    domestic_currency={self.domestic_currency},\n"
-            f"    domestic_direction={self.domestic_direction.value},\n"
+            f"    base_currency={self.base_currency},\n"
+            f"    base_direction={self.base_direction.value},\n"
+            f"    quote_currency={self.quote_currency},\n"
+            f"    quote_direction={self.quote_direction.value},\n"
             f"    giv_payment={self.giv_payment},\n"
             f"    alt_payment={self.alt_payment},\n"
             f"    done={self.done}\n"
