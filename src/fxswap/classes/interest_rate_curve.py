@@ -2,6 +2,7 @@
 Interest rate curve with day count conventions and interpolation.
 """
 
+import calendar as _calendar_mod
 from datetime import date
 from enum import Enum
 import math
@@ -132,7 +133,7 @@ class InterestRateCurve:
             Zero rate as a decimal.
         """
         if target_date == self.reference_date:
-            return self._zero_rates[0] if self._pillar_t[0] == 0.0 else self._zero_rates[0]
+            return self._zero_rates[0]
         t = self.year_fraction(self.reference_date, target_date)
         return self._interpolate_zero_rate(t)
 
@@ -437,8 +438,7 @@ def _build_coupon_schedule(reference_date: date, maturity: date, freq: str) -> l
         try:
             current = date(y, m, current.day)
         except ValueError:
-            import calendar as cal_mod
-            last_day = cal_mod.monthrange(y, m)[1]
+            last_day = _calendar_mod.monthrange(y, m)[1]
             current = date(y, m, last_day)
 
     return sorted(dates)

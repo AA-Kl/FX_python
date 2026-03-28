@@ -1,5 +1,5 @@
 import pytest
-from datetime import date
+from datetime import date, timedelta
 from src.fxswap.classes.calendar import Calendar, RollConvention, _easter
 from src.fxswap.classes.currency import Currency
 
@@ -166,13 +166,11 @@ class TestEURCalendar:
     def test_easter_monday_2024(self):
         # Easter Sunday 2024 = March 31, Easter Monday = April 1
         easter = _easter(2024)
-        from datetime import timedelta
         easter_monday = easter + timedelta(days=1)
         assert self.cal.is_business_day(easter_monday) is False
 
     def test_good_friday_2024(self):
         easter = _easter(2024)
-        from datetime import timedelta
         good_friday = easter - timedelta(days=2)
         assert self.cal.is_business_day(good_friday) is False
 
