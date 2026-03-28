@@ -44,44 +44,44 @@ class CurrencyPair(Enum):
         if len(args) == 1:  # Single string argument
             pair_str = args[0]
             if len(pair_str) == 7 and pair_str[3] == '/':  # Format: "XXX/YYY"
-                first_currency = Currency[pair_str[:3]]
-                second_currency = Currency[pair_str[4:]]
+                base_currency = Currency[pair_str[:3]]
+                quote_currency = Currency[pair_str[4:]]
             elif len(pair_str) == 6:  # Format: "XXXYYY"
-                first_currency = Currency[pair_str[:3]]
-                second_currency = Currency[pair_str[3:]]
+                base_currency = Currency[pair_str[:3]]
+                quote_currency = Currency[pair_str[3:]]
             else:
                 raise ValueError("Invalid string format for currency pair.")
         elif len(args) == 2:  # Two separate currency arguments
-            first_currency, second_currency = args
-            if isinstance(first_currency, str):
-                first_currency = Currency[first_currency]
-            elif not isinstance(first_currency, Currency):
+            base_currency, quote_currency = args
+            if isinstance(base_currency, str):
+                base_currency = Currency[base_currency]
+            elif not isinstance(base_currency, Currency):
                 raise ValueError("First argument must be an instance of Currency or a valid currency string.")
-            
-            if isinstance(second_currency, str):
-                second_currency = Currency[second_currency]
-            elif not isinstance(second_currency, Currency):
+
+            if isinstance(quote_currency, str):
+                quote_currency = Currency[quote_currency]
+            elif not isinstance(quote_currency, Currency):
                 raise ValueError("Second argument must be an instance of Currency or a valid currency string.")
         else:
             raise ValueError("Invalid number of arguments for CurrencyPair constructor.")
 
         # Find the matching CurrencyPair (direct or inverted)
         for pair in cls:
-            if pair.value == (first_currency, second_currency):
+            if pair.value == (base_currency, quote_currency):
                 return pair
-            if pair.value == (second_currency, first_currency):  # Check for inverted pair
+            if pair.value == (quote_currency, base_currency):  # Check for inverted pair
                 return pair
 
-        raise ValueError(f"No matching CurrencyPair found for {first_currency}/{second_currency}.")
-    
-    def get_domestic_currency(self):
-        """Returns the domestic currency of the currency pair."""
-        return self.value[1]
+        raise ValueError(f"No matching CurrencyPair found for {base_currency}/{quote_currency}.")
 
-    def get_foreign_currency(self):
-        """Returns the foreign currency of the currency pair."""
+    def get_base_currency(self):
+        """Returns the base currency of the currency pair."""
         return self.value[0]
 
+    def get_quote_currency(self):
+        """Returns the quote currency of the currency pair."""
+        return self.value[1]
+
     def __str__(self):
-        foreign, domestic = self.value
-        return f"{foreign.value}/{domestic.value}"
+        base, quote = self.value
+        return f"{base.value}/{quote.value}"
