@@ -37,7 +37,7 @@ class FXTrade:
         self.trade_date = trade_date or date.today()  # Default to today if not provided
         self.alt_currency = self.quote_currency if self.giv_currency == self.base_currency else self.base_currency
         self.giv_direction = giv_direction
-        self.alt_direction = TradeDirection.opposite(self.giv_direction)
+        self.alt_direction = TradeDirection.opposite(self.giv_direction)        
         self.direction = self.giv_direction if self.giv_currency == self.base_currency else self.alt_direction
         self.base_direction = self.direction
         self.quote_direction = TradeDirection.opposite(self.direction)
@@ -72,7 +72,7 @@ class FXTrade:
                 raise ValueError("Rate must be a positive number.")
             self.rate = rate
             if self.giv_currency == self.base_currency:
-                self.alt_amount = self.giv_amount * rate
+                self.alt_amount = self.giv_amount * rate    
             elif self.giv_currency == self.quote_currency:
                 self.alt_amount = self.giv_amount / rate
             else:
@@ -82,7 +82,7 @@ class FXTrade:
                 raise ValueError("alt_amount must be a positive number.")
             self.alt_amount = alt_amount
             if self.giv_currency == self.base_currency:
-                self.rate = self.giv_amount/self.alt_amount
+                self.rate = self.giv_amount/self.alt_amount    
             elif self.giv_currency == self.quote_currency:
                 self.rate = self.alt_amount/self.giv_amount
             else:
