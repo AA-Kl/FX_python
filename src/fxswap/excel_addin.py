@@ -43,11 +43,11 @@ def generate_position_report():
     for trade in fx_trades:
         value_date = trade.value_date
         if trade.giv_direction == TradeDirection.BUY:
-            positions_by_date[value_date][trade.currency_pair.get_domestic_currency()] += trade.giv_amount
-            positions_by_date[value_date][trade.currency_pair.get_foreign_currency()] -= trade.giv_amount * trade.rate
+            positions_by_date[value_date][trade.currency_pair.get_quote_currency()] += trade.giv_amount
+            positions_by_date[value_date][trade.currency_pair.get_base_currency()] -= trade.giv_amount * trade.rate
         elif trade.giv_direction == TradeDirection.SELL:
-            positions_by_date[value_date][trade.currency_pair.get_domestic_currency()] -= trade.giv_amount
-            positions_by_date[value_date][trade.currency_pair.get_foreign_currency()] += trade.giv_amount * trade.rate
+            positions_by_date[value_date][trade.currency_pair.get_quote_currency()] -= trade.giv_amount
+            positions_by_date[value_date][trade.currency_pair.get_base_currency()] += trade.giv_amount * trade.rate
 
     # Write the position report to the output sheet
     output_sheet.clear()
