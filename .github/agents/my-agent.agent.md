@@ -5,10 +5,8 @@
 # For format details, see: https://gh.io/customagents/config
 
 name: agent_fxpy
-description:
+description: agent assigned to fx_python
 ---
-
-# My Agent
 
 ## Purpose
 
