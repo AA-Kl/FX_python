@@ -3,6 +3,7 @@
 ## Purpose
 
 This repository is maintained using AI coding agents.
+The agent working on this repository is **GitHub Copilot Coding Agent**, powered by **Claude** (by Anthropic).
 Work is defined through GitHub Issues.
 
 ## Rules
