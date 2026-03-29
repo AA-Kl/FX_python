@@ -12,6 +12,8 @@ from .classes.FXrate import FXrate
 from .classes.FXTrade import FXTrade
 from .classes.FXSwap import FXSwap
 from .classes.payment import Payment
+from .classes.calendar import Calendar, RollConvention
+from .classes.interest_rate_curve import DayCountConvention, InterpolationMethod, InterestRateCurve
 
 __version__ = "0.1.0"
 __all__ = [
@@ -23,4 +25,9 @@ __all__ = [
     "FXTrade",
     "FXSwap",
     "Payment",
+    "Calendar",
+    "RollConvention",
+    "DayCountConvention",
+    "InterpolationMethod",
+    "InterestRateCurve",
 ]
